@@ -1,0 +1,219 @@
+/*Outer wrapper */
+.pp-wrap {
+  min-height: calc(100vh - 52px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 16px;
+  background: #f1f8e9;
+}
+
+/* Card */
+.pp-card {
+  background: #fff;
+  border: 1px solid #c8e6c9;
+  border-radius: 12px;
+  padding: 32px 28px 36px;
+  width: 100%;
+  max-width: 460px;
+  box-shadow: 0 4px 20px rgba(46, 125, 50, 0.09);
+}
+
+.pp-title {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #1b5e20;
+  margin-bottom: 24px;
+}
+
+/*Product summary */
+.pp-product {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.pp-product__img-wrap {
+  width: 80px;
+  height: 80px;
+  border-radius: 8px;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: #f1f8e9;
+}
+
+.pp-product__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.pp-product__img-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+}
+
+.pp-product__info {
+  flex: 1;
+}
+
+.pp-product__name {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #212121;
+  margin-bottom: 6px;
+}
+
+.pp-product__pricing {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.pp-product__mrp {
+  font-size: 0.82rem;
+  color: #bdbdbd;
+  text-decoration: line-through;
+}
+
+.pp-product__price {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #2e7d32;
+}
+
+.pp-product__saving {
+  font-size: 0.75rem;
+  background: #e8f5e9;
+  color: #2e7d32;
+  padding: 2px 8px;
+  border-radius: 20px;
+  font-weight: 600;
+}
+
+/* Divider */
+.pp-divider {
+  border: none;
+  border-top: 1px dashed #e0e0e0;
+  margin: 0 0 16px;
+}
+
+/* Total row */
+.pp-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  font-size: 0.95rem;
+  color: #555;
+}
+
+.pp-total__amount {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: #1b5e20;
+}
+
+/* Section label */
+.pp-section-label {
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: #9e9e9e;
+  margin-bottom: 12px;
+}
+
+/* Payment option buttons */
+.pp-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.pp-option {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 18px;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  background: #fff;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.15s, background 0.15s;
+  width: 100%;
+}
+
+.pp-option:hover:not(:disabled) {
+  border-color: #2e7d32;
+  background: #f9fbe7;
+}
+
+.pp-option:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.pp-option--cod:hover:not(:disabled) {
+  border-color: #2e7d32;
+}
+
+.pp-option--online:hover:not(:disabled) {
+  border-color: #1565c0;
+}
+
+.pp-option__icon {
+  font-size: 1.6rem;
+  flex-shrink: 0;
+}
+
+.pp-option__text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.pp-option__text strong {
+  font-size: 0.95rem;
+  color: #212121;
+}
+
+.pp-option__text small {
+  font-size: 0.78rem;
+  color: #9e9e9e;
+}
+
+.pp-option__arrow {
+  font-size: 1.1rem;
+  color: #bdbdbd;
+  transition: color 0.15s, transform 0.15s;
+}
+
+.pp-option:hover:not(:disabled) .pp-option__arrow {
+  color: #2e7d32;
+  transform: translateX(3px);
+}
+
+/* Back button */
+.pp-back {
+  background: none;
+  border: none;
+  color: #757575;
+  font-size: 0.85rem;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.15s;
+}
+
+.pp-back:hover {
+  color: #2e7d32;
+}

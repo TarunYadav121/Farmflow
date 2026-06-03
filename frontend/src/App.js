@@ -1,64 +1,100 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-
-// Layout
-import Navbar from './components/layout/Navbar';
-import Footer from './components/layout/Footer';
-
-// Public pages
-import HomePage from './pages/HomePage';
-import ProductsPage from './pages/ProductsPage';
-import ProductDetailPage from './pages/ProductDetailPage';
-import LoginPage from './pages/auth/LoginPage';
-import RegisterPage from './pages/auth/RegisterPage';
-
-// Buyer pages
-import CartPage from './pages/buyer/CartPage';
-import CheckoutPage from './pages/buyer/CheckoutPage';
-import MyOrdersPage from './pages/buyer/MyOrdersPage';
-
-// Seller pages
-import SellerDashboard from './pages/seller/SellerDashboard';
-import ManageProducts from './pages/seller/ManageProducts';
-import AddProductPage from './pages/seller/AddProductPage';
-import EditProductPage from './pages/seller/EditProductPage';
-import SellerOrdersPage from './pages/seller/SellerOrdersPage';
-
-// Route guards
-import PrivateRoute from './components/routing/PrivateRoute';
-import SellerRoute from './components/routing/SellerRoute';
+import { useState, useEffect } from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import LoginPage        from './pages/LoginPage';
+import SellerDashboard  from './pages/SellerDashboard';
+import SellerOrdersPage from './pages/SellerOrdersPage';
+import BuyerPage        from './pages/BuyerPage';
+import OrdersPage       from './pages/OrdersPage';
+import PaymentPage      from './pages/PaymentPage';
+import Navbar           from './components/Navbar';
+import ErrorBoundary    from './components/ErrorBoundary';
 
 function App() {
+  const [user, setUser] = useState(() => {
+    const saved = localStorage.getItem('user');
+    return saved ? JSON.parse(saved) : null;
+  });
+
+  function handleLogin(userData) {
+    setUser(userData);
+    localStorage.setItem('user', JSON.stringify(userData));
+    localStorage.setItem('token', userData.token);
+  }
+
+  function handleLogout() {
+    setUser(null);
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
+  }
+
+  // Listen for 401 responses fired by apiFetch — auto-logout when token expires
+  useEffect(() => {
+    function onExpired() {
+      alert('Your session has expired. Please log in again.');
+      handleLogout();
+    }
+    window.addEventListener('auth:expired', onExpired);
+    return () => window.removeEventListener('auth:expired', onExpired);
+  }, []);
+
   return (
-    <Router>
-      <Navbar />
-      <main style={{ minHeight: '80vh', padding: '20px' }}>
+    <BrowserRouter>
+      <Navbar user={user} onLogout={handleLogout} />
+
+      {/* Catches render crashes in any page and shows a fallback */}
+      <ErrorBoundary>
         <Routes>
-          {/* Public */}
-          <Route path="/" element={<HomePage />} />
-          <Route path="/products" element={<ProductsPage />} />
-          <Route path="/products/:id" element={<ProductDetailPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
+          {/* Not logged in */}
+          <Route
+            path="/login"
+            element={!user ? <LoginPage onLogin={handleLogin} /> : <Navigate to="/" />}
+          />
 
-          {/* Buyer (any logged-in user) */}
-          <Route path="/cart" element={<PrivateRoute><CartPage /></PrivateRoute>} />
-          <Route path="/checkout" element={<PrivateRoute><CheckoutPage /></PrivateRoute>} />
-          <Route path="/my-orders" element={<PrivateRoute><MyOrdersPage /></PrivateRoute>} />
+          {/* Home — seller or buyer */}
+          <Route
+            path="/"
+            element={
+              !user                  ? <Navigate to="/login" /> :
+              user.role === 'seller' ? <SellerDashboard />      :
+              <BuyerPage />
+            }
+          />
 
-          {/* Seller only */}
-          <Route path="/seller/dashboard" element={<SellerRoute><SellerDashboard /></SellerRoute>} />
-          <Route path="/seller/products" element={<SellerRoute><ManageProducts /></SellerRoute>} />
-          <Route path="/seller/products/add" element={<SellerRoute><AddProductPage /></SellerRoute>} />
-          <Route path="/seller/products/edit/:id" element={<SellerRoute><EditProductPage /></SellerRoute>} />
-          <Route path="/seller/orders" element={<SellerRoute><SellerOrdersPage /></SellerRoute>} />
+          {/* Buyer — orders */}
+          <Route
+            path="/orders"
+            element={
+              !user                 ? <Navigate to="/login" /> :
+              user.role !== 'buyer' ? <Navigate to="/" />      :
+              <OrdersPage />
+            }
+          />
+
+          {/* Buyer — payment */}
+          <Route
+            path="/payment"
+            element={
+              !user                 ? <Navigate to="/login" /> :
+              user.role !== 'buyer' ? <Navigate to="/" />      :
+              <PaymentPage />
+            }
+          />
+
+          {/* Seller — orders */}
+          <Route
+            path="/seller-orders"
+            element={
+              !user                  ? <Navigate to="/login" /> :
+              user.role !== 'seller' ? <Navigate to="/" />      :
+              <SellerOrdersPage />
+            }
+          />
+
+          {/* Fallback */}
+          <Route path="*" element={<Navigate to="/" />} />
         </Routes>
-      </main>
-      <Footer />
-      <ToastContainer position="top-right" autoClose={3000} />
-    </Router>
+      </ErrorBoundary>
+    </BrowserRouter>
   );
 }
 

@@ -1,0 +1,69 @@
+.navbar {
+  background: #2e7d32;
+  color: white;
+  padding: 0 24px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.navbar__brand {
+  font-size: 1.1rem;
+  font-weight: 800;
+  cursor: pointer;
+  letter-spacing: 0.3px;
+}
+
+.navbar__right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* nav link buttons */
+.navbar__link {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.45);
+  color: white;
+  padding: 5px 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: background 0.15s;
+}
+
+.navbar__link:hover {
+  background: rgba(255,255,255,0.15);
+}
+
+/* active page highlight */
+.navbar__link--active {
+  background: rgba(255,255,255,0.22);
+  border-color: white;
+  font-weight: 600;
+}
+
+.navbar__user {
+  font-size: 0.82rem;
+  opacity: 0.85;
+  padding: 0 6px;
+}
+
+.navbar__logout {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.6);
+  color: white;
+  padding: 5px 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: background 0.15s;
+}
+
+.navbar__logout:hover {
+  background: rgba(255,255,255,0.18);
+}

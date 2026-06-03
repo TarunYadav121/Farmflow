@@ -11,7 +11,7 @@ const productSchema = new mongoose.Schema({
   },
   discount: {
     type: Number,
-    default: 0, 
+    default: 0,
   },
   finalPrice: {
     type: Number,
@@ -22,6 +22,23 @@ const productSchema = new mongoose.Schema({
   seller: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
+  },
+  image: {
+    type: String,
+  },
+
+  category: {
+    type: String,
+  },
+
+  stock: {
+    type: Number,
+    default: 0,
+  },
+
+  isActive: {
+    type: Boolean,
+    default: true,
   },
 });
 
