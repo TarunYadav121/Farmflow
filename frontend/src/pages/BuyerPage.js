@@ -2,21 +2,21 @@ import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import apiFetch from '../utils/apiFetch';
 import './BuyerPage.css';
-
+const API_URL = process.env.REACT_APP_API_URL || "";
 const CATEGORIES = ['all', 'vegetables', 'fruits', 'grains', 'dairy',
-                    'herbs', 'electronics', 'clothing', 'mobile', 'accessories', 'other'];
+  'herbs', 'electronics', 'clothing', 'mobile', 'accessories', 'other'];
 
 function BuyerPage() {
-  const [products, setProducts]   = useState([]);
-  const [loading, setLoading]     = useState(true);
-  const [search, setSearch]       = useState('');
-  const [category, setCategory]   = useState('all');
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState('');
+  const [category, setCategory] = useState('all');
   // Track per-product "adding to cart" state
   const [addingMap, setAddingMap] = useState({});
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch('/api/products')
+    fetch(`${API_URL}/api/products`)
       .then(r => r.json())
       .then(data => setProducts(Array.isArray(data) ? data : []))
       .catch(() => setProducts([]))
@@ -26,7 +26,7 @@ function BuyerPage() {
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
     return products.filter(p => {
-      const matchName     = !q || p.name.toLowerCase().includes(q);
+      const matchName = !q || p.name.toLowerCase().includes(q);
       const matchCategory = category === 'all' || p.category === category;
       return matchName && matchCategory;
     });
@@ -37,11 +37,11 @@ function BuyerPage() {
     navigate('/payment', {
       state: {
         productId: product._id,
-        name:      product.name,
-        price:     product.finalPrice,
-        mrp:       product.mrp,
-        discount:  product.discount,
-        image:     product.image,
+        name: product.name,
+        price: product.finalPrice,
+        mrp: product.mrp,
+        discount: product.discount,
+        image: product.image,
       },
     });
   }
@@ -49,7 +49,7 @@ function BuyerPage() {
   async function handleAddToCart(productId) {
     setAddingMap(prev => ({ ...prev, [productId]: true }));
     try {
-      const res  = await apiFetch(`/api/cart/add/${productId}`, { method: 'POST' });
+      const res = await apiFetch(`/api/cart/add/${productId}`, { method: 'POST' });
       const data = await res.json();
 
       if (!res.ok) {
@@ -118,9 +118,9 @@ function BuyerPage() {
       ) : (
         <div className="bp-grid">
           {filtered.map(p => {
-            const outOfStock  = p.stock <= 0;
+            const outOfStock = p.stock <= 0;
             const hasDiscount = p.discount > 0;
-            const isAdding    = addingMap[p._id];
+            const isAdding = addingMap[p._id];
 
             return (
               <div className={`bp-card ${outOfStock ? 'bp-card--oos' : ''}`} key={p._id}>

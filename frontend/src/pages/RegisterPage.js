@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './RegisterPage.css';
-
+const API_URL = process.env.REACT_APP_API_URL || "";
 function RegisterPage() {
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
     name: '', email: '', password: '', role: 'buyer',
   });
-  const [error, setError]     = useState('');
+  const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -29,10 +29,10 @@ function RegisterPage() {
 
     setLoading(true);
     try {
-      const res  = await fetch('/api/auth/register', {
-        method:  'POST',
+      const res = await fetch(`${API_URL}/api/auth/register`, {
+        method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body:    JSON.stringify(form),
+        body: JSON.stringify(form),
       });
       const data = await res.json();
 
@@ -62,8 +62,8 @@ function RegisterPage() {
         </div>
 
         {/* Feedback */}
-        {error   && <div className="rp-error"   role="alert">{error}</div>}
-        {success && <div className="rp-success"  role="status">{success}</div>}
+        {error && <div className="rp-error" role="alert">{error}</div>}
+        {success && <div className="rp-success" role="status">{success}</div>}
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="rp-form" noValidate>
