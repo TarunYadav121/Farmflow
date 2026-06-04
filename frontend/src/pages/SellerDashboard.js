@@ -4,7 +4,7 @@ import apiFetch from '../utils/apiFetch';
 
 const BLANK = {
   name: '', mrp: '', discount: '0',
-  category: 'vegetables', stock: '', description: '',
+  category: 'vegetables', stock: '', description: '', image: '',
 };
 
 const CATEGORIES = [
@@ -30,6 +30,7 @@ function ProductForm({ editProduct, onDone, onCancel }) {
         category:    editProduct.category    ?? 'vegetables',
         stock:       editProduct.stock       ?? '',
         description: editProduct.description ?? '',
+        image:       editProduct.image       ?? '',
       });
     } else {
       setForm(BLANK);
@@ -122,6 +123,25 @@ function ProductForm({ editProduct, onDone, onCancel }) {
           <textarea rows={2} value={form.description} onChange={change('description')} />
         </div>
 
+        <div className="sd-field">
+          <label>Image URL (optional)</label>
+          <input
+            type="url"
+            value={form.image}
+            onChange={change('image')}
+            placeholder="https://example.com/product.jpg"
+          />
+          {/* Live preview */}
+          {form.image && (
+            <img
+              src={form.image}
+              alt="preview"
+              onError={e => { e.target.style.display = 'none'; }}
+              style={{ marginTop: 8, height: 80, width: 80, objectFit: 'cover', borderRadius: 6, border: '1px solid #e0e0e0' }}
+            />
+          )}
+        </div>
+
         <button className="sd-btn" type="submit" disabled={loading}>
           {loading
             ? (isEdit ? 'Updating…' : 'Adding…')
@@ -177,7 +197,27 @@ function MyProducts({ refreshKey, onEdit, onDeleted }) {
       <h3>My Products {!loading && `(${products.length})`}</h3>
 
       {loading ? (
-        <p className="sd-state">Loading…</p>
+        <div className="sd-table-wrap">
+          <table className="sd-table">
+            <thead>
+              <tr>
+                <th>Name</th><th>MRP</th><th>Discount</th>
+                <th>Final Price</th><th>Stock</th><th>Category</th><th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {[1,2,3].map(i => (
+                <tr key={i} className="sd-skeleton-row">
+                  {[180,60,60,80,50,90,100].map((w, j) => (
+                    <td key={j}>
+                      <div className="skeleton sd-skeleton-cell" style={{ width: w }} />
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       ) : products.length === 0 ? (
         <div className="sd-empty">
           <span>📦</span>

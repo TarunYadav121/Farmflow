@@ -1,15 +1,21 @@
 import { useState, useEffect } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import LoginPage        from './pages/LoginPage';
+import RegisterPage     from './pages/RegisterPage';
 import SellerDashboard  from './pages/SellerDashboard';
 import SellerOrdersPage from './pages/SellerOrdersPage';
 import BuyerPage        from './pages/BuyerPage';
+import CartPage         from './pages/CartPage';
+import AddressPage      from './pages/AddressPage';
 import OrdersPage       from './pages/OrdersPage';
 import PaymentPage      from './pages/PaymentPage';
 import Navbar           from './components/Navbar';
 import ErrorBoundary    from './components/ErrorBoundary';
 
-function App() {
+// Inner component so we can use useNavigate (must be inside BrowserRouter)
+function AppRoutes() {
+  const navigate = useNavigate();
+
   const [user, setUser] = useState(() => {
     const saved = localStorage.getItem('user');
     return saved ? JSON.parse(saved) : null;
@@ -25,9 +31,10 @@ function App() {
     setUser(null);
     localStorage.removeItem('user');
     localStorage.removeItem('token');
+    navigate('/login');
   }
 
-  // Listen for 401 responses fired by apiFetch — auto-logout when token expires
+  // Auto-logout on token expiry (fired by apiFetch on any 401)
   useEffect(() => {
     function onExpired() {
       alert('Your session has expired. Please log in again.');
@@ -38,16 +45,18 @@ function App() {
   }, []);
 
   return (
-    <BrowserRouter>
+    <>
       <Navbar user={user} onLogout={handleLogout} />
-
-      {/* Catches render crashes in any page and shows a fallback */}
       <ErrorBoundary>
         <Routes>
-          {/* Not logged in */}
+          {/* Public auth routes */}
           <Route
             path="/login"
             element={!user ? <LoginPage onLogin={handleLogin} /> : <Navigate to="/" />}
+          />
+          <Route
+            path="/register"
+            element={!user ? <RegisterPage /> : <Navigate to="/" />}
           />
 
           {/* Home — seller or buyer */}
@@ -57,6 +66,26 @@ function App() {
               !user                  ? <Navigate to="/login" /> :
               user.role === 'seller' ? <SellerDashboard />      :
               <BuyerPage />
+            }
+          />
+
+          {/* Buyer — cart */}
+          <Route
+            path="/cart"
+            element={
+              !user                 ? <Navigate to="/login" /> :
+              user.role !== 'buyer' ? <Navigate to="/" />      :
+              <CartPage />
+            }
+          />
+
+          {/* Buyer — addresses */}
+          <Route
+            path="/addresses"
+            element={
+              !user                 ? <Navigate to="/login" /> :
+              user.role !== 'buyer' ? <Navigate to="/" />      :
+              <AddressPage />
             }
           />
 
@@ -94,6 +123,14 @@ function App() {
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </ErrorBoundary>
+    </>
+  );
+}
+
+function App() {
+  return (
+    <BrowserRouter>
+      <AppRoutes />
     </BrowserRouter>
   );
 }

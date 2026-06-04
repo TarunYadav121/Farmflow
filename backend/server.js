@@ -16,9 +16,11 @@ mongoose
   .catch((err) => console.error('MongoDB error:', err));
 
 
-app.use('/api/auth',     require('./routes/authRoutes'));
-app.use('/api/products', require('./routes/productRoutes'));
-app.use('/api/orders',   require('./routes/orderRoutes'));
+app.use('/api/auth',      require('./routes/authRoutes'));
+app.use('/api/products',  require('./routes/productRoutes'));
+app.use('/api/orders',    require('./routes/orderRoutes'));
+app.use('/api/cart',      require('./routes/cartRoutes'));
+app.use('/api/addresses', require('./routes/addressRoutes'));
 
 
 app.get('/', (req, res) => {

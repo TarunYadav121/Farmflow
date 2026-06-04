@@ -1,24 +1,27 @@
+/* ── Page ─────────────────────────────────────────────────────────────────── */
 .sop-page {
-  max-width: 920px;
-  margin: 32px auto;
+  max-width: 960px;
+  margin: 36px auto;
   padding: 0 20px;
 }
 
 .sop-title {
-  font-size: 1.4rem;
+  font-size: 1.5rem;
+  font-weight: 800;
   color: #1b5e20;
   margin-bottom: 24px;
 }
 
+/* ── Loading / error ──────────────────────────────────────────────────────── */
 .sop-state {
-  color: #888;
-  font-size: 1rem;
+  color: #9e9e9e;
+  font-size: 0.92rem;
   padding: 24px 0;
 }
 
 .sop-state--error { color: #c62828; }
 
-/* Summary cards  */
+/* ── Summary cards ────────────────────────────────────────────────────────── */
 .sop-summary {
   display: flex;
   gap: 16px;
@@ -28,10 +31,11 @@
 
 .sop-stat {
   background: #fff;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
+  border: 1px solid #eaeaea;
+  border-radius: 10px;
   padding: 16px 24px;
-  min-width: 150px;
+  min-width: 160px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
 }
 
 .sop-stat--earnings {
@@ -41,75 +45,117 @@
 
 .sop-stat__label {
   display: block;
-  font-size: 0.78rem;
-  color: #9e9e9e;
+  font-size: 0.75rem;
+  color: #aaa;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 6px;
+  letter-spacing: 0.6px;
+  margin-bottom: 8px;
 }
 
 .sop-stat__value {
   display: block;
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   font-weight: 800;
-  color: #2e7d32;
+  color: #1b5e20;
 }
 
-/*  Empty state  */
+/* ── Empty state ──────────────────────────────────────────────────────────── */
 .sop-empty {
   text-align: center;
-  padding: 40px 0;
-  color: #9e9e9e;
+  padding: 60px 20px;
+  color: #bdbdbd;
 }
 
-.sop-empty span { font-size: 2.5rem; display: block; margin-bottom: 10px; }
-.sop-empty p    { font-size: 0.9rem; }
+.sop-empty span { font-size: 3rem; display: block; margin-bottom: 12px; }
+.sop-empty p    { font-size: 0.92rem; color: #9e9e9e; max-width: 280px; margin: 0 auto; }
 
-/*  Status badge  */
+/* ── Status badge variants ────────────────────────────────────────────────── */
 .sop-badge {
-  background: #e8f5e9;
-  color: #2e7d32;
+  display: inline-block;
   padding: 3px 10px;
   border-radius: 20px;
-  font-size: 0.75rem;
+  font-size: 0.74rem;
   font-weight: 700;
+  white-space: nowrap;
+  letter-spacing: 0.3px;
 }
 
+.sop-badge--confirmed { background: #e8f5e9; color: #2e7d32; }
+.sop-badge--shipped   { background: #e3f2fd; color: #1565c0; }
+.sop-badge--delivered { background: #f3e5f5; color: #6a1b9a; }
+.sop-badge--cancelled { background: #ffebee; color: #c62828; }
+
+/* ── Status cell ──────────────────────────────────────────────────────────── */
+.sop-status-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  min-width: 138px;
+}
+
+.sop-status-select {
+  padding: 5px 9px;
+  border: 1px solid #d0d0d0;
+  border-radius: 5px;
+  font-size: 0.8rem;
+  font-family: inherit;
+  cursor: pointer;
+  background: #fafafa;
+  outline: none;
+  transition: border-color 0.15s;
+  color: #333;
+}
+
+.sop-status-select:focus    { border-color: #2e7d32; }
+.sop-status-select:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* ── Table ────────────────────────────────────────────────────────────────── */
 .sop-table-wrap {
   overflow-x: auto;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
+  border: 1px solid #eaeaea;
+  border-radius: 10px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
 }
 
 .sop-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.88rem;
+  font-size: 0.875rem;
 }
 
 .sop-table th {
-  background: #f1f8e9;
+  background: #f8fdf8;
   color: #2e7d32;
   font-weight: 700;
   padding: 12px 16px;
   text-align: left;
-  border-bottom: 2px solid #c8e6c9;
+  border-bottom: 2px solid #d8edd8;
   white-space: nowrap;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
 }
 
 .sop-table td {
-  padding: 11px 16px;
-  border-bottom: 1px solid #f0f0f0;
+  padding: 12px 16px;
+  border-bottom: 1px solid #f4f4f4;
   vertical-align: middle;
+  color: #333;
 }
 
 .sop-table tbody tr:nth-child(even) td { background: #fafafa; }
 .sop-table tbody tr:last-child td      { border-bottom: none; }
-.sop-table tbody tr:hover td           { background: #f1f8e9; }
+.sop-table tbody tr:hover td           { background: #fafdf8; }
 
-.sop-num     { color: #bdbdbd; width: 40px; }
-.sop-product { font-weight: 600; color: #212121; }
+.sop-num     { color: #ccc; width: 40px; font-size: 0.8rem; }
+.sop-product { font-weight: 700; color: #1a1a1a; }
 .sop-buyer   { color: #555; }
 .sop-price   { font-weight: 700; color: #2e7d32; }
-.sop-date    { color: #757575; white-space: nowrap; }
+.sop-date    { color: #aaa; white-space: nowrap; font-size: 0.82rem; }
+
+/* ── Responsive ───────────────────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .sop-page { padding: 0 14px; margin: 20px auto; }
+  .sop-stat { min-width: 130px; padding: 14px 18px; }
+}

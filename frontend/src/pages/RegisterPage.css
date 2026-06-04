@@ -1,5 +1,5 @@
 /* Outer wrapper  */
-.lp-wrap {
+.rp-wrap {
   min-height: calc(100vh - 52px);
   display: flex;
   align-items: center;
@@ -8,60 +8,47 @@
   background: #f1f8e9;
 }
 
-/*  Card  */
-.lp-card {
+/* Card  */
+.rp-card {
   background: #fff;
   border: 1px solid #c8e6c9;
   border-radius: 12px;
   padding: 36px 32px 32px;
   width: 100%;
-  max-width: 400px;
+  max-width: 420px;
   box-shadow: 0 4px 24px rgba(46, 125, 50, 0.08);
 }
 
 @media (max-width: 480px) {
-  .lp-card { padding: 28px 20px 28px; }
+  .rp-card { padding: 28px 20px 28px; }
 }
 
 /* Header  */
-.lp-header {
+.rp-header {
   text-align: center;
-  margin-bottom: 22px;
+  margin-bottom: 24px;
 }
 
-.lp-logo {
+.rp-logo {
   font-size: 2.4rem;
   display: block;
   margin-bottom: 6px;
 }
 
-.lp-title {
-  font-size: 1.5rem;
+.rp-title {
+  font-size: 1.45rem;
   font-weight: 800;
   color: #1b5e20;
   margin-bottom: 4px;
 }
 
-.lp-sub {
+.rp-sub {
   font-size: 0.85rem;
   color: #9e9e9e;
 }
 
-/*  Role hint pill  */
-.lp-role-hint {
-  background: #f1f8e9;
-  border: 1px solid #c8e6c9;
-  border-radius: 6px;
-  padding: 9px 14px;
-  font-size: 0.82rem;
-  color: #2e7d32;
-  text-align: center;
-  margin-bottom: 20px;
-  line-height: 1.4;
-}
-
-/*  Error message  */
-.lp-error {
+/*  Feedback messages  */
+.rp-error {
   background: #fff5f5;
   color: #c62828;
   border: 1px solid #ffcdd2;
@@ -69,24 +56,45 @@
   border-radius: 6px;
   padding: 10px 14px;
   font-size: 0.85rem;
-  margin-bottom: 18px;
+  margin-bottom: 16px;
   line-height: 1.4;
 }
 
-/*  Form  */
-.lp-form {
+.rp-success {
+  background: #f1f8e9;
+  color: #2e7d32;
+  border: 1px solid #c8e6c9;
+  border-left: 3px solid #43a047;
+  border-radius: 6px;
+  padding: 10px 14px;
+  font-size: 0.85rem;
+  margin-bottom: 16px;
+  line-height: 1.4;
+}
+
+/* Form  */
+.rp-form {
   display: flex;
   flex-direction: column;
 }
 
-.lp-label {
+.rp-label {
   font-size: 0.82rem;
   font-weight: 600;
   color: #555;
   margin-bottom: 5px;
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
 }
 
-.lp-input {
+.rp-hint {
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: #aaa;
+}
+
+.rp-input {
   padding: 10px 12px;
   border: 1px solid #d0d0d0;
   border-radius: 6px;
@@ -97,15 +105,18 @@
   outline: none;
   width: 100%;
   color: #212121;
+  background: #fff;
 }
 
-.lp-input:focus {
+.rp-input:focus {
   border-color: #2e7d32;
   box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.12);
 }
 
-/*  Submit button  */
-.lp-submit {
+.rp-select { cursor: pointer; }
+
+/* Submit button  */
+.rp-submit {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -125,36 +136,36 @@
   letter-spacing: 0.3px;
 }
 
-.lp-submit:hover:not(:disabled) { background: #1b5e20; }
-.lp-submit:disabled { background: #a5d6a7; cursor: not-allowed; }
+.rp-submit:hover:not(:disabled) { background: #1b5e20; }
+.rp-submit:disabled { background: #a5d6a7; cursor: not-allowed; }
 
-/* Inline spinner inside button  */
-.lp-spinner {
+/* Inline spinner  */
+.rp-spinner {
   display: inline-block;
   width: 16px;
   height: 16px;
   border: 2px solid rgba(255,255,255,0.4);
   border-top-color: #fff;
   border-radius: 50%;
-  animation: lp-spin 0.7s linear infinite;
+  animation: rp-spin 0.7s linear infinite;
   flex-shrink: 0;
 }
 
-@keyframes lp-spin { to { transform: rotate(360deg); } }
+@keyframes rp-spin { to { transform: rotate(360deg); } }
 
-/* Footer link  */
-.lp-footer {
+/*  Footer  */
+.rp-footer {
   margin-top: 20px;
   text-align: center;
   font-size: 0.85rem;
   color: #888;
 }
 
-.lp-link {
+.rp-link {
   color: #2e7d32;
   font-weight: 600;
   text-decoration: none;
   transition: color 0.15s;
 }
 
-.lp-link:hover { color: #1b5e20; text-decoration: underline; }
+.rp-link:hover { color: #1b5e20; text-decoration: underline; }

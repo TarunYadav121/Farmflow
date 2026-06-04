@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 
+const STATUSES = ['Confirmed', 'Shipped', 'Delivered', 'Cancelled'];
+
 const orderSchema = new mongoose.Schema(
   {
     user: {
@@ -19,6 +21,11 @@ const orderSchema = new mongoose.Schema(
     quantity: {
       type: Number,
       default: 1,
+    },
+    status: {
+      type: String,
+      enum: STATUSES,
+      default: 'Confirmed',
     },
   },
   { timestamps: true }

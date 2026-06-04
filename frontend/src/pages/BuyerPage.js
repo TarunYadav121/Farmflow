@@ -1,15 +1,18 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
+import apiFetch from '../utils/apiFetch';
 import './BuyerPage.css';
 
 const CATEGORIES = ['all', 'vegetables', 'fruits', 'grains', 'dairy',
                     'herbs', 'electronics', 'clothing', 'mobile', 'accessories', 'other'];
 
 function BuyerPage() {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading]   = useState(true);
-  const [search, setSearch]     = useState('');
-  const [category, setCategory] = useState('all');
+  const [products, setProducts]   = useState([]);
+  const [loading, setLoading]     = useState(true);
+  const [search, setSearch]       = useState('');
+  const [category, setCategory]   = useState('all');
+  // Track per-product "adding to cart" state
+  const [addingMap, setAddingMap] = useState({});
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -20,7 +23,6 @@ function BuyerPage() {
       .finally(() => setLoading(false));
   }, []);
 
-  // Combine search + category filter — recalculates only when deps change
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
     return products.filter(p => {
@@ -30,7 +32,8 @@ function BuyerPage() {
     });
   }, [products, search, category]);
 
-  function handleBuy(product) {
+  // Navigate to /payment directly (existing flow untouched)
+  function handleBuyNow(product) {
     navigate('/payment', {
       state: {
         productId: product._id,
@@ -43,10 +46,32 @@ function BuyerPage() {
     });
   }
 
+  async function handleAddToCart(productId) {
+    setAddingMap(prev => ({ ...prev, [productId]: true }));
+    try {
+      const res  = await apiFetch(`/api/cart/add/${productId}`, { method: 'POST' });
+      const data = await res.json();
+
+      if (!res.ok) {
+        alert(data.message || 'Could not add to cart');
+        return;
+      }
+      // Navigate to cart so user sees it was added
+      navigate('/cart');
+    } catch {
+      alert('Could not add to cart. Check your connection.');
+    } finally {
+      setAddingMap(prev => ({ ...prev, [productId]: false }));
+    }
+  }
+
   if (loading) {
     return (
       <div className="bp-page">
-        <div className="bp-loading">Loading products…</div>
+        <div className="bp-loading">
+          <span className="spinner" />
+          Loading products…
+        </div>
       </div>
     );
   }
@@ -55,7 +80,7 @@ function BuyerPage() {
     <div className="bp-page">
       <h2 className="bp-title">All Products</h2>
 
-      {/*Filters */}
+      {/* Filters */}
       <div className="bp-filters">
         <input
           className="bp-search"
@@ -77,16 +102,14 @@ function BuyerPage() {
         </select>
       </div>
 
-      {/* ── Result count ────────────────────────────────────────────────── */}
-      {!loading && (
-        <p className="bp-count">
-          {filtered.length === 0
-            ? 'No products match your filters.'
-            : `Showing ${filtered.length} product${filtered.length !== 1 ? 's' : ''}`}
-        </p>
-      )}
+      {/* Result count */}
+      <p className="bp-count">
+        {filtered.length === 0
+          ? 'No products match your filters.'
+          : `Showing ${filtered.length} product${filtered.length !== 1 ? 's' : ''}`}
+      </p>
 
-      {/* ── Grid ────────────────────────────────────────────────────────── */}
+      {/* Grid */}
       {filtered.length === 0 ? (
         <div className="bp-empty-state">
           <span>🔍</span>
@@ -97,6 +120,7 @@ function BuyerPage() {
           {filtered.map(p => {
             const outOfStock  = p.stock <= 0;
             const hasDiscount = p.discount > 0;
+            const isAdding    = addingMap[p._id];
 
             return (
               <div className={`bp-card ${outOfStock ? 'bp-card--oos' : ''}`} key={p._id}>
@@ -133,13 +157,23 @@ function BuyerPage() {
                     {outOfStock ? 'Out of Stock' : `In Stock: ${p.stock}`}
                   </p>
 
-                  <button
-                    className="bp-card__btn"
-                    onClick={() => handleBuy(p)}
-                    disabled={outOfStock}
-                  >
-                    {outOfStock ? 'Out of Stock' : 'Buy Now'}
-                  </button>
+                  {/* Two-button row */}
+                  <div className="bp-card__actions">
+                    <button
+                      className="bp-card__btn bp-card__btn--cart"
+                      onClick={() => handleAddToCart(p._id)}
+                      disabled={outOfStock || isAdding}
+                    >
+                      {isAdding ? '…' : '🛒 Cart'}
+                    </button>
+                    <button
+                      className="bp-card__btn bp-card__btn--buy"
+                      onClick={() => handleBuyNow(p)}
+                      disabled={outOfStock}
+                    >
+                      Buy Now
+                    </button>
+                  </div>
                 </div>
 
               </div>

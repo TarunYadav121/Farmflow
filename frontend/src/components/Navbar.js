@@ -16,44 +16,52 @@ function Navbar({ user, onLogout }) {
 
       {user && (
         <div className="navbar__right">
-          {/* My Orders — buyers only */}
+          {/* Buyer links */}
           {user.role === 'buyer' && (
-            <button
-              className={`navbar__link ${isActive('/orders') ? 'navbar__link--active' : ''}`}
-              onClick={() => navigate('/orders')}
-            >
-              My Orders
-            </button>
+            <>
+              <button
+                className={`navbar__link ${isActive('/') ? 'navbar__link--active' : ''}`}
+                onClick={() => navigate('/')}
+              >
+                Products
+              </button>
+              <button
+                className={`navbar__link ${isActive('/cart') ? 'navbar__link--active' : ''}`}
+                onClick={() => navigate('/cart')}
+              >
+                🛒 Cart
+              </button>
+              <button
+                className={`navbar__link ${isActive('/addresses') ? 'navbar__link--active' : ''}`}
+                onClick={() => navigate('/addresses')}
+              >
+                Addresses
+              </button>
+              <button
+                className={`navbar__link ${isActive('/orders') ? 'navbar__link--active' : ''}`}
+                onClick={() => navigate('/orders')}
+              >
+                My Orders
+              </button>
+            </>
           )}
 
-          {/* Products — buyers go back to home */}
-          {user.role === 'buyer' && (
-            <button
-              className={`navbar__link ${isActive('/') ? 'navbar__link--active' : ''}`}
-              onClick={() => navigate('/')}
-            >
-              Products
-            </button>
-          )}
-
-          {/* Orders — sellers only */}
+          {/* Seller links */}
           {user.role === 'seller' && (
-            <button
-              className={`navbar__link ${isActive('/seller-orders') ? 'navbar__link--active' : ''}`}
-              onClick={() => navigate('/seller-orders')}
-            >
-              Orders
-            </button>
-          )}
-
-          {/* Dashboard — sellers go back to home */}
-          {user.role === 'seller' && (
-            <button
-              className={`navbar__link ${isActive('/') ? 'navbar__link--active' : ''}`}
-              onClick={() => navigate('/')}
-            >
-              Dashboard
-            </button>
+            <>
+              <button
+                className={`navbar__link ${isActive('/') ? 'navbar__link--active' : ''}`}
+                onClick={() => navigate('/')}
+              >
+                Dashboard
+              </button>
+              <button
+                className={`navbar__link ${isActive('/seller-orders') ? 'navbar__link--active' : ''}`}
+                onClick={() => navigate('/seller-orders')}
+              >
+                Orders
+              </button>
+            </>
           )}
 
           <span className="navbar__user">

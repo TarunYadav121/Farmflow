@@ -9,6 +9,7 @@
   position: sticky;
   top: 0;
   z-index: 100;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
 
 .navbar__brand {
@@ -16,54 +17,86 @@
   font-weight: 800;
   cursor: pointer;
   letter-spacing: 0.3px;
+  user-select: none;
+  flex-shrink: 0;
 }
 
 .navbar__right {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
+  flex-wrap: nowrap;
+  overflow: hidden;
 }
 
-/* nav link buttons */
+/* ── Nav link buttons ─────────────────────────────────────────────────────── */
 .navbar__link {
   background: transparent;
-  border: 1px solid rgba(255,255,255,0.45);
+  border: 1px solid rgba(255, 255, 255, 0.4);
   color: white;
   padding: 5px 14px;
-  border-radius: 4px;
+  border-radius: 5px;
   cursor: pointer;
-  font-size: 0.85rem;
-  transition: background 0.15s;
+  font-size: 0.84rem;
+  font-family: inherit;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: background 0.15s, border-color 0.15s;
 }
 
 .navbar__link:hover {
-  background: rgba(255,255,255,0.15);
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.7);
 }
 
-/* active page highlight */
+/* Active page highlight */
 .navbar__link--active {
-  background: rgba(255,255,255,0.22);
-  border-color: white;
-  font-weight: 600;
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.9);
+  font-weight: 700;
 }
 
+/* ── User info ────────────────────────────────────────────────────────────── */
 .navbar__user {
-  font-size: 0.82rem;
-  opacity: 0.85;
-  padding: 0 6px;
+  font-size: 0.8rem;
+  opacity: 0.82;
+  padding: 0 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 160px;
 }
 
+/* ── Logout button ────────────────────────────────────────────────────────── */
 .navbar__logout {
   background: transparent;
-  border: 1px solid rgba(255,255,255,0.6);
+  border: 1px solid rgba(255, 255, 255, 0.55);
   color: white;
   padding: 5px 14px;
-  border-radius: 4px;
+  border-radius: 5px;
   cursor: pointer;
-  font-size: 0.85rem;
+  font-size: 0.84rem;
+  font-family: inherit;
+  white-space: nowrap;
   transition: background 0.15s;
+  flex-shrink: 0;
 }
 
 .navbar__logout:hover {
-  background: rgba(255,255,255,0.18);
+  background: rgba(255, 255, 255, 0.18);
+}
+
+/* ── Mobile ───────────────────────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .navbar { padding: 0 14px; }
+
+  /* Hide user text on very small screens */
+  .navbar__user { display: none; }
+
+  /* Shrink link buttons */
+  .navbar__link,
+  .navbar__logout {
+    padding: 5px 10px;
+    font-size: 0.78rem;
+  }
 }

@@ -2,6 +2,14 @@ import { useState, useEffect } from 'react';
 import './OrdersPage.css';
 import apiFetch from '../utils/apiFetch';
 
+// Maps status value → CSS modifier class
+const STATUS_CLASS = {
+  Confirmed: 'op-badge--confirmed',
+  Shipped:   'op-badge--shipped',
+  Delivered: 'op-badge--delivered',
+  Cancelled: 'op-badge--cancelled',
+};
+
 function OrdersPage() {
   const [orders, setOrders]   = useState([]);
   const [loading, setLoading] = useState(true);
@@ -21,8 +29,14 @@ function OrdersPage() {
   // Total spent
   const totalSpent = orders.reduce((sum, o) => sum + (o.price ?? 0) * (o.quantity ?? 1), 0);
 
-  if (loading) return <div className="op-page"><p className="op-state">Loading orders…</p></div>;
-  if (error)   return <div className="op-page"><p className="op-state op-state--error">{error}</p></div>;
+  if (loading) return (
+    <div className="op-page">
+      <div className="loading-block"><span className="spinner" />Loading orders…</div>
+    </div>
+  );
+  if (error) return (
+    <div className="op-page"><p className="op-state op-state--error">{error}</p></div>
+  );
 
   return (
     <div className="op-page">
@@ -68,7 +82,11 @@ function OrdersPage() {
                     <td className="op-cat">{order.product?.category || '—'}</td>
                     <td className="op-price">₹{order.price?.toFixed(2)}</td>
                     <td>{order.quantity}</td>
-                    <td><span className="op-badge">Confirmed</span></td>
+                    <td>
+                      <span className={`op-badge ${STATUS_CLASS[order.status] || 'op-badge--confirmed'}`}>
+                        {order.status || 'Confirmed'}
+                      </span>
+                    </td>
                     <td className="op-date">
                       {new Date(order.createdAt).toLocaleString('en-IN', {
                         day: '2-digit', month: 'short', year: 'numeric',
